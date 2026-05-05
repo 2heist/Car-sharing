@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: carsharing_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Qwerty!12345
+      POSTGRES_DB: carsharing
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - carsharing_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: carsharing_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: Qwerty!12345
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - carsharing_network
+
+networks:
+  carsharing_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
